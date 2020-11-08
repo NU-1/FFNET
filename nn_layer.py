@@ -17,6 +17,7 @@ class Layer(object):
 		self.num_output = num_output
 		self.activation_type = activation_type
 
+		#comment all after this ---------------
 		self.W = []
 		self.b = []
 		if self.activation_type == 'relu':

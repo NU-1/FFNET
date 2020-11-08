@@ -44,7 +44,7 @@ class NeuralNet(object):
 			self.accuracy = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(self.y,1), tf.argmax(self.y_,1)), tf.float32))
 
 		#############################################
-		# optimization method
+		# optimization minimizeethod
 		#############################################
 		if opt_type=='SGD':
 			self.train_step = tf.train.GradientDescentOptimizer(self.learning_rate).minimize(self.loss)
