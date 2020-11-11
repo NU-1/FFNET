@@ -1,0 +1,4 @@
+#!/bin/bash
+
+mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
+xxd -i ${mydir}/model.tflite > ${mydir}/model.cc
