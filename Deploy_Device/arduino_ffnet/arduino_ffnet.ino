@@ -65,21 +65,43 @@ void setup(){
   input = interpreter->input(0);
   output = interpreter->output(0);
 
+
+  
   // Keep track of how many inferences we have performed.
   inference_count = 0;
 }
 
 
 void loop(){
-	
-  analogWrite(led, 255);
-  delay(2000);
-  analogWrite(led,0);
-  delay(2000);
+	blink();
 
-  analogWrite(led, 255);
-  delay(1000);
-  analogWrite(led,0);
-  delay(1000);
+Serial.print(interpreter->get_input_details())
+  
+
+//Run Interpreter
+TfLiteStatus invoke_status = interpreter->Invoke();
+
+int8_t y_quantized = output->data.int8[0];
+
+
+inference_count += 1;
 
  }
+
+
+
+void blink(){
+  analogWrite(led, 255);
+  delay(2000);
+  analogWrite(led,0);
+  delay(2000);
+  //Serial.print("Hello\n");
+  analogWrite(led, 255);
+  delay(1000);
+  analogWrite(led,0);
+  delay(1000);
+}
+
+
+
+ 
