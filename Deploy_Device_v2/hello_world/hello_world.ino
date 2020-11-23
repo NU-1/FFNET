@@ -16,11 +16,11 @@ limitations under the License.
 #include <TensorFlowLite.h>
 
 #include "main_functions.h"
-
-#include "tensorflow/lite/micro/all_ops_resolver.h"
 #include "constants.h"
 #include "model.h"
 #include "output_handler.h"
+
+#include "tensorflow/lite/micro/all_ops_resolver.h"
 #include "tensorflow/lite/micro/micro_error_reporter.h"
 #include "tensorflow/lite/micro/micro_interpreter.h"
 #include "tensorflow/lite/schema/schema_generated.h"
@@ -36,10 +36,8 @@ TfLiteTensor* input = nullptr;
 TfLiteTensor* output = nullptr;
 int inference_count = 0;
 
-// Create an area of memory to use for input, output, and intermediate arrays.
-// Minimum arena size, at the time of writing. After allocating tensors
-// you can retrieve this value by invoking interpreter.arena_used_bytes().
-const int kModelArenaSize = 2468;
+// Increased arena size for FFNET Model
+const int kModelArenaSize = 70*1024;
 // Extra headroom for model + alignment + future interpreter changes.
 const int kExtraArenaSize = 560 + 16 + 100;
 const int kTensorArenaSize = kModelArenaSize + kExtraArenaSize;
@@ -91,7 +89,6 @@ void setup() {
 
 // The name of this function is important for Arduino compatibility.
 void loop() {
-
 
   //Using Error Reporter to Print Input Tensor Information to Serial
   TF_LITE_REPORT_ERROR(error_reporter, "Input Tensor Number of Dimensions: %d\n", input->dims->size);
