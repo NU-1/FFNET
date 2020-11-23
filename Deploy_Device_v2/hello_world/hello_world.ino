@@ -92,8 +92,13 @@ void loop() {
 
   //Using Error Reporter to Print Input Tensor Information to Serial
   TF_LITE_REPORT_ERROR(error_reporter, "Input Tensor Number of Dimensions: %d\n", input->dims->size);
-  TF_LITE_REPORT_ERROR(error_reporter, "First Dimension Size: %d\n", input->dims->data[0]);
-  TF_LITE_REPORT_ERROR(error_reporter, "Second Dimension Size: %d\n", input->dims->data[1]);
+  TF_LITE_REPORT_ERROR(error_reporter, "Input First Dimension Size: %d\n", input->dims->data[0]);
+  TF_LITE_REPORT_ERROR(error_reporter, "Input Second Dimension Size: %d\n", input->dims->data[1]);
+
+  //Using Error Reporter to Print Output Tensor Information to Serial
+  TF_LITE_REPORT_ERROR(error_reporter, "Output Tensor Number of Dimensions: %d\n", input->dims->size);
+  TF_LITE_REPORT_ERROR(error_reporter, "Output First Dimension Size: %d\n", output->dims->data[0]);
+  TF_LITE_REPORT_ERROR(error_reporter, "Output Second Dimension Size: %d\n", output->dims->data[1]);
 
   //Confirming input tensor type
   //TF_LITE_MICRO_EXPECT_EQ(kTfLiteFloat32, input->type);
@@ -101,9 +106,11 @@ void loop() {
   //dummy input
   float x_val = 10.0;
 
+  TF_LITE_REPORT_ERROR(error_reporter, "Input Value: %f\n", x_val);
+  
   // Place dummy x value in the model's input tensor
   input->data.f[0] = x_val;
-
+  
   // Run inference, and report any error
   TfLiteStatus invoke_status = interpreter->Invoke();
   if (invoke_status != kTfLiteOk) {
@@ -114,9 +121,8 @@ void loop() {
 
   // Read the predicted y value from the model's output tensor
   float y_val = output->data.f[0];
-
-  //Another way to Print Output
-  HandleOutput(error_reporter, x_val, y_val);
+  
+  TF_LITE_REPORT_ERROR(error_reporter, "Output Value: %f\n", y_val);
   
   // Increment the inference_counter
   inference_count += 1;
