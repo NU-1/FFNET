@@ -5,4 +5,5 @@ Steps:
 
 2. Copy the output array (declare it as const) into FFNET/Deploy_Host/main.cc 
 
+3. Inspect Model's Input and Output Tensors (Inspect_Model)
 
