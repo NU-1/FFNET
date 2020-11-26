@@ -37,7 +37,8 @@ TfLiteTensor* output = nullptr;
 int inference_count = 0;
 
 // Increased arena size for FFNET Model
-const int kModelArenaSize = 70*1024;
+//Arena Size Estimator thinks we need: {"arena_size": 5872}
+const int kModelArenaSize = 50*1024;
 // Extra headroom for model + alignment + future interpreter changes.
 const int kExtraArenaSize = 560 + 16 + 100;
 const int kTensorArenaSize = kModelArenaSize + kExtraArenaSize;
@@ -103,27 +104,42 @@ void loop() {
   //Confirming input tensor type
   //TF_LITE_MICRO_EXPECT_EQ(kTfLiteFloat32, input->type);
  
-  //dummy input
-  float x_val = 10.0;
+  //dummy input/output
+  float dummy_input[1028]; 
+  float dummy_output[25];
 
-  TF_LITE_REPORT_ERROR(error_reporter, "Input Value: %f\n", x_val);
   
-  // Place dummy x value in the model's input tensor
-  input->data.f[0] = x_val;
+  //create dummy input
+   for(int i=0; i<1028; i++){
+    dummy_input[i] = 1.0 + i ;
+  }
   
+  // Place dummy x values in the model's input tensor
+  for(int i=0; i<1028; i++){
+    input->data.f[i] = dummy_input[i];
+    //TF_LITE_REPORT_ERROR(error_reporter, "Input Value, Idx %d: %f\n", i, dummy_input[i]);
+  }
+
+
   // Run inference, and report any error
   TfLiteStatus invoke_status = interpreter->Invoke();
   if (invoke_status != kTfLiteOk) {
-    TF_LITE_REPORT_ERROR(error_reporter, "Invoke failed on x_val: %f\n",
-                         static_cast<double>(x_val));
+    TF_LITE_REPORT_ERROR(error_reporter, "Invoke failed %f\n",
+                         NULL);
     return;
   }
 
   // Read the predicted y value from the model's output tensor
-  float y_val = output->data.f[0];
   
-  TF_LITE_REPORT_ERROR(error_reporter, "Output Value: %f\n", y_val);
-  
+  for(int i=0; i<25; i++){
+   dummy_output[i] = output->data.f[i];
+   
+   TF_LITE_REPORT_ERROR(error_reporter, "Output Value, Idx %d: %f\n", i, dummy_output[i]);
+  }
+
   // Increment the inference_counter
   inference_count += 1;
+
+  TF_LITE_REPORT_ERROR(error_reporter, "------------\n\nNext Inference\n", NULL );
+    
 }
