@@ -7,3 +7,5 @@ Steps:
 
 3. Inspect Model's Input and Output Tensors (Inspect_Model)
 
+4. For Arduino <--> Python communication, pip install pyserialtransfer, and get arduino library 
+
